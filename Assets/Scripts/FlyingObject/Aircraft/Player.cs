@@ -6,9 +6,6 @@ public class Player : Aircraft {
 
 	protected override void Move()
 	{
-		Rigidbody.MovePosition(transform.position + InputManager.Instance.GetDistance() * Time.deltaTime);
+		return transform.position + InputManager.Instance.GetDistance () * Time.deltaTime;
 	}
-
-
-
 }

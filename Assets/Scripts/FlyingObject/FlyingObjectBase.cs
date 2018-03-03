@@ -5,11 +5,13 @@ using UnityEngine;
 public abstract class FlyingObjectBase : MonoBehaviour {
 
 	Rigidbody m_rigidbody;
-	protected Rigidbody Rigidbody
+
+	// いる？
+	private Rigidbody Rigidbody
 	{
 		get {
 			if (m_rigidbody == null) {
-				m_rigidbody = GetComponent<Rigidbody>();
+				m_rigidbody = GetComponent<Rigidbody>(); // まだ初期化されていなければrigidbodyをgameobjectから取得
 			}
 			return m_rigidbody;
 		}
@@ -18,18 +20,27 @@ public abstract class FlyingObjectBase : MonoBehaviour {
     // Use this for initialization
 	void Start()
 	{
-
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		Move();
+		DoMove ();
 	}
 
 	/// <summary>
-	/// 移動に関わる内容はここで実装します。
-	/// (Updateで実効される関数)
+	/// 移動の実行
+	/// (UPDATEの中で実行される)
 	/// </summary>
-	protected abstract void Move();
+	private void DoMove ()
+	{
+		Rigidbody.MovePosition(Move());
+	}
+
+	/// <summary>
+	/// 移動に関わる内容はここで実装してください。
+	/// </summary>
+	protected abstract Vector3 Move();
+
+
 }
