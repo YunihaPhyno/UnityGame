@@ -17,22 +17,11 @@ public abstract class FlyingObjectBase : MonoBehaviour {
 		}
 	}
 
-    // Use this for initialization
-	void Start()
-	{
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-		DoMove ();
-	}
-
 	/// <summary>
 	/// 移動の実行
-	/// (UPDATEの中で実行される)
+	/// (Updateの中で実行される)
 	/// </summary>
-	private void DoMove ()
+	public void DoMove()
 	{
 		Rigidbody.MovePosition(Move());
 	}
@@ -40,7 +29,6 @@ public abstract class FlyingObjectBase : MonoBehaviour {
 	/// <summary>
 	/// 移動に関わる内容はここで実装してください。
 	/// </summary>
+	/// <returns>移動差分</returns>
 	protected abstract Vector3 Move();
-
-
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Aircraft : FlyingObjectBase
 {
+	protected abstract bool CanShoot();
 
-
+	protected abstract Bullet[] Shoot();
 }

@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BulletBase : FlyingObjectBase {
+public abstract class Bullet : FlyingObjectBase {
 	
 }
