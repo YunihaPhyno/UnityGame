@@ -2,17 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : Singleton<InputManager> {
-
-	// Use this for initialization
-	void Start() {
-
-	}
-
-	// Update is called once per frame
-	void Update() {
-
-	}
+public class InputManager {
 
 #if UNITY_EDITOR
 	/// <summary>

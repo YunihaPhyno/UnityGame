@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T> {
+public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+{
 
-    private static T instance_;
+	private static T instance_;
 
 	// なんかまだバグがある・・・
 	public static T Instance
@@ -21,14 +22,14 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T> {
 	}
 
 	private void Awake()
-    {
-        if (instance_ != null)
-        {
-            Object.Destroy(this);
+	{
+		if (instance_ != null)
+		{
+			Object.Destroy(this);
 			return;
-        }
-        instance_ = (T)this;
-    }
+		}
+		instance_ = (T)this;
+	}
 
-    protected Singleton () {}
+	protected Singleton() { }
 }
