@@ -9,7 +9,7 @@ namespace Ingame
 
 		protected override Vector3 Move()
 		{
-			return transform.position + InputManager.Instance.GetDistance() * Time.deltaTime;
+			return transform.position + GameManager.Instance.InputManager.GetDistance() * Time.deltaTime;
 		}
 
 		protected override bool CanShoot()

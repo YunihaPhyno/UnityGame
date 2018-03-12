@@ -6,10 +6,8 @@ namespace Ingame
 {
 	public class GameManager : Singleton<GameManager>
 	{
-
-		// aircrafts関連
-		// TODO
-		private Aircraft[] m_aircrafts;
+		[SerializeField]
+		Player m_player;
 
 		// 弾関連
 		[SerializeField]
@@ -20,15 +18,20 @@ namespace Ingame
 		ResourceManager m_resourceManager;
 		public ResourceManager ResourceManager { get { return m_resourceManager; } }
 
+		private InputManager m_inputManager;
+		public InputManager InputManager { get { return m_inputManager; } }
+
 		// Use this for initialization
 		void Start()
 		{
 			m_bulletsManager = new BulletsManager(m_numMaxStraightBullets);
+			m_inputManager = new InputManager();
 		}
 
 		// Update is called once per frame
 		void Update()
 		{
+			m_player.DoMove();
 		}
 	}
 }
