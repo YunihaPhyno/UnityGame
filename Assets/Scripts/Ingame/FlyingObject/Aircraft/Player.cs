@@ -14,7 +14,7 @@ namespace Ingame
 
 		protected override bool CanShoot()
 		{
-			throw new System.NotImplementedException();
+			return GameManager.Instance.InputManager.IsShoot();
 		}
 
 		protected override Bullet[] Shoot()

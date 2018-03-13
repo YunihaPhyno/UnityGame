@@ -7,14 +7,15 @@ namespace Ingame
 	/// <summary>
 	/// BulletManager<T>をまとめるクラス
 	/// </summary>
-	public class BulletsManager
+	public class BulletManagers : MonoBehaviour
 	{
-
+		[SerializeField]
 		StraightBulletManager m_straightBulletManager;
 
-		public BulletsManager(int straight)
+		public void Inisialize()
 		{
-			m_straightBulletManager = new StraightBulletManager(straight, GameManager.Instance.ResourceManager.StraightBulletPrefab);
+			m_straightBulletManager.Initialize();
 		}
+
 	}
 }

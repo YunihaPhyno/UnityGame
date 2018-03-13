@@ -11,8 +11,7 @@ namespace Ingame
 
 		// 弾関連
 		[SerializeField]
-		int m_numMaxStraightBullets;
-		private BulletsManager m_bulletsManager;
+		private BulletManagers m_bulletManagers;
 
 		[SerializeField]
 		ResourceManager m_resourceManager;
@@ -24,8 +23,8 @@ namespace Ingame
 		// Use this for initialization
 		void Start()
 		{
-			m_bulletsManager = new BulletsManager(m_numMaxStraightBullets);
 			m_inputManager = new InputManager();
+			m_bulletManagers.Inisialize();
 		}
 
 		// Update is called once per frame

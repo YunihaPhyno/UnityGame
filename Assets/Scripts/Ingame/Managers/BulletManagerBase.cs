@@ -4,34 +4,34 @@ using UnityEngine;
 
 namespace Ingame
 {
-	public class BulletManagerBase<T> where T : Bullet
+	public class BulletManagerBase<T> : MonoBehaviour where T : Bullet
 	{
-
-		private T[] m_ringBuffer;
+		[SerializeField]
 		private int m_numMaxBullets;
 		public int numMaxBullets { get { return m_numMaxBullets; } }
 
-		public BulletManagerBase(int max, string prefabPath)
-		{
-			GameObject prefab = Resources.Load<GameObject>(prefabPath);
-			Initialize(max, prefab);
-		}
+		[SerializeField]
+		private GameObject m_prefab;
 
-		public BulletManagerBase(int max, GameObject prefab)
+		private T[] m_ringBuffer;
+		
+		public void Initialize()
 		{
-			Initialize(max, prefab);
-		}
-
-		public void Initialize(int max, GameObject prefab)
-		{
-			m_numMaxBullets = max;
-			m_ringBuffer = new T[max];
+			m_ringBuffer = new T[m_numMaxBullets];
 
 			for (int i = 0; i < m_ringBuffer.Length; i++)
 			{
-				GameObject gobj = GameObject.Instantiate<GameObject>(prefab);
+				GameObject gobj = Instantiate();
 				m_ringBuffer[i] = gobj.GetComponent<T>();
 			}
+		}
+
+		private GameObject Instantiate()
+		{
+			GameObject gobj = GameObject.Instantiate<GameObject>(m_prefab);
+			gobj.transform.parent = this.transform;
+			gobj.SetActive(false);
+			return gobj;
 		}
 	}
 }

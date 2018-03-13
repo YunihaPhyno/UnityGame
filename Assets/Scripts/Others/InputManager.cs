@@ -30,6 +30,16 @@ public class InputManager {
 		}
 		return vec.normalized;
 	}
+
+	public bool IsShoot ()
+	{
+		if(Input.GetKeyDown(KeyCode.Space))
+		{
+			return true;
+		}
+
+		return false;
+	}
 #endif
 
 }

@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4306521841831226}
+  - component: {fileID: 114792722946010648}
   m_Layer: 0
   m_Name: StraightBullet
   m_TagString: Untagged
@@ -112,6 +113,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1553204224979082}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114792722946010648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1465487777322622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c3b0dc93c78427cbeb80a3f542246f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135478929570125082
 SphereCollider:
   m_ObjectHideFlags: 1
