@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a994c7f7d9848ba41b09b037a663a147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_straightBulletManager: {fileID: 0}
+  m_straightBulletManager: {fileID: 2124647239}
 --- !u!4 &2065826629
 Transform:
   m_ObjectHideFlags: 0
