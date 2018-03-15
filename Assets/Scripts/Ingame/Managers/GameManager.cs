@@ -12,6 +12,7 @@ namespace Ingame
 		// 弾関連
 		[SerializeField]
 		private BulletManagers m_bulletManagers;
+		public BulletManagers BulletManagers { get { return m_bulletManagers; } }
 
 		[SerializeField]
 		ResourceManager m_resourceManager;
@@ -30,7 +31,19 @@ namespace Ingame
 		// Update is called once per frame
 		void Update()
 		{
+			DoMove();
+			DoShoot();
+		}
+
+		void DoMove()
+		{
 			m_player.DoMove();
+			m_bulletManagers.DoMove();
+		}
+
+		void DoShoot()
+		{
+			m_player.DoShoot();
 		}
 	}
 }

@@ -8,6 +8,14 @@ namespace Ingame
 	{
 		protected abstract bool CanShoot();
 
-		protected abstract Bullet[] Shoot();
+		protected abstract void Shoot();
+
+		public void DoShoot()
+		{
+			if(CanShoot())
+			{
+				Shoot();
+			}
+		}
 	}
 }

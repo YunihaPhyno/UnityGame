@@ -8,30 +8,61 @@ namespace Ingame
 	{
 		[SerializeField]
 		private int m_numMaxBullets;
-		public int numMaxBullets { get { return m_numMaxBullets; } }
+		public int NumMaxBullets { get { return m_numMaxBullets; } }
 
 		[SerializeField]
 		private GameObject m_prefab;
 
 		private T[] m_ringBuffer;
+		private int m_tail;
 		
 		public void Initialize()
 		{
+			m_tail = 0;
 			m_ringBuffer = new T[m_numMaxBullets];
 
 			for (int i = 0; i < m_ringBuffer.Length; i++)
 			{
-				GameObject gobj = Instantiate();
+				GameObject gobj = InstantiateBullet(m_prefab, this.transform);
 				m_ringBuffer[i] = gobj.GetComponent<T>();
 			}
 		}
 
-		private GameObject Instantiate()
+		static private GameObject InstantiateBullet(GameObject prefab, Transform parent)
 		{
-			GameObject gobj = GameObject.Instantiate<GameObject>(m_prefab);
-			gobj.transform.parent = this.transform;
+			GameObject gobj = GameObject.Instantiate<GameObject>(prefab);
+			gobj.transform.parent = parent;
 			gobj.SetActive(false);
 			return gobj;
+		}
+
+		public void DoMove()
+		{
+			for(int i = 0; i < m_ringBuffer.Length; i++)
+			{
+				m_ringBuffer[i].DoMove();
+			}
+		}
+
+		public T GetBullet()
+		{
+			T bullet = m_ringBuffer[m_tail];
+			m_tail++;
+			if(m_tail >= m_ringBuffer.Length)
+			{
+				m_tail -= m_ringBuffer.Length;
+			}
+			return bullet;
+		}
+
+		public T[] GetBullets(int num)
+		{
+			T[] bullets = new T[num];
+			for (int i = 0; i < bullets.Length; i++)
+			{
+				bullets[i] = GetBullet();
+			}
+			return bullets;
 		}
 	}
 }

@@ -17,9 +17,13 @@ namespace Ingame
 			return GameManager.Instance.InputManager.IsShoot();
 		}
 
-		protected override Bullet[] Shoot()
+		protected override void Shoot()
 		{
-			throw new System.NotImplementedException();
+			StraightBullet[] straightBullets = GameManager.Instance.BulletManagers.Straight.GetBullets(3);
+			for(int i = 0; i < straightBullets.Length; i++)
+			{
+				straightBullets[i].Initialize(transform.position, new Vector3(0, 1 + i, 0));
+			}
 		}
 	}
 }
