@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Ingame
 {
-	public class StraightBullet : Bullet
+	public class LinearAccelBulletManager : BulletManagerBase<LinearAccelBullet>
 	{
 	}
 }

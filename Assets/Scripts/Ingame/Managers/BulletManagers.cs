@@ -10,8 +10,8 @@ namespace Ingame
 	public class BulletManagers : MonoBehaviour
 	{
 		[SerializeField]
-		StraightBulletManager m_straightBulletManager;
-		public StraightBulletManager Straight { get { return m_straightBulletManager; } }
+		LinearAccelBulletManager m_straightBulletManager;
+		public LinearAccelBulletManager Straight { get { return m_straightBulletManager; } }
 
 		public void Inisialize()
 		{

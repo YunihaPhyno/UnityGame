@@ -2,34 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+namespace Common
 {
-
-	private static T instance_;
-
-	// なんかまだバグがある・・・
-	public static T Instance
+	public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 	{
-		get
+
+		private static T instance_;
+
+		// なんかまだバグがある・・・
+		public static T Instance
 		{
-			if (instance_ == null)
+			get
 			{
-				GameObject obj = new GameObject(typeof(T).Name);
-				instance_ = obj.AddComponent<T>();
+				if (instance_ == null)
+				{
+					GameObject obj = new GameObject(typeof(T).Name);
+					instance_ = obj.AddComponent<T>();
+				}
+				return instance_;
 			}
-			return instance_;
 		}
-	}
 
-	private void Awake()
-	{
-		if (instance_ != null)
+		private void Awake()
 		{
-			Object.Destroy(this);
-			return;
+			if (instance_ != null)
+			{
+				Object.Destroy(this);
+				return;
+			}
+			instance_ = (T)this;
 		}
-		instance_ = (T)this;
-	}
 
-	protected Singleton() { }
+		protected Singleton() { }
+	}
 }

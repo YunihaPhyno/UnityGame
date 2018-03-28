@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Common;
 
 namespace Ingame
 {
@@ -8,6 +9,10 @@ namespace Ingame
 	{
 		[SerializeField]
 		Player m_player;
+		public Vector3 GetPlayerPosition () { return m_player.transform.position; }
+
+		[SerializeField]
+		EnemyManager m_enemyManager;
 
 		// 弾関連
 		[SerializeField]
@@ -39,11 +44,13 @@ namespace Ingame
 		{
 			m_player.DoMove();
 			m_bulletManagers.DoMove();
+			m_enemyManager.DoMove();
 		}
 
 		void DoShoot()
 		{
 			m_player.DoShoot();
+			m_enemyManager.DoShoot();
 		}
 	}
 }
