@@ -4,7 +4,13 @@ using UnityEngine;
 
 namespace Common
 {
-	public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+	/// <summary>
+	/// シングルトンは悪い文明！！破壊する！！
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// 
+	/*
+	public class __Singleton<T> : MonoBehaviour where T : Singleton<T>
 	{
 
 		private static T instance_;
@@ -35,4 +41,5 @@ namespace Common
 
 		protected Singleton() { }
 	}
+	*/
 }

@@ -12,7 +12,7 @@ namespace Common
 		/// キーボードから入力される方向を返します。(長さは1固定)
 		/// </summary>
 		/// <returns>長さ1の方向ベクトル</returns>
-		public Vector3 GetDistance()
+		public Vector3 GetDirection()
 		{
 			Vector3 vec = new Vector3();
 			if (Input.GetKey(KeyCode.W))
@@ -65,5 +65,12 @@ namespace Common
 		}
 #endif
 
+		#region PlayerInput
+		public Ingame.Player.InputParameter.PlayerInput GetPlayerInput()
+		{
+			return new Ingame.Player.InputParameter.PlayerInput(IsShoot(), IsSpeedUp(), IsSpeedDown(), GetDirection());
+		}
+
+		#endregion
 	}
 }

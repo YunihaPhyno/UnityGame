@@ -32,6 +32,7 @@ namespace Ingame
 
 		protected override void Shoot()
 		{
+			/*
 			LinearAccelBullet[] linearAccelBullets = GameManager.Instance.BulletManagers.Straight.GetBullets(36);
 			float theta = 2.0f / (float)linearAccelBullets.Length * Mathf.PI;
 			for (int i = 0; i < linearAccelBullets.Length; i++)
@@ -40,8 +41,10 @@ namespace Ingame
 				linearAccelBullets[i].Initialize(this.transform.position, direction * 3, Bullet.LAYER.ENEMY);
 				linearAccelBullets[i].SetConstantAcceleration(-direction * 2 + GetPlayerDirection() * 2);
 			}
+			*/
 		}
 
+		/*
 		private Vector3 GetPlayerDirection()
 		{
 			Vector3 p_pos = GameManager.Instance.GetPlayerPosition();
@@ -49,5 +52,6 @@ namespace Ingame
 			Vector3 vec = p_pos - e_pos;
 			return vec.normalized;
 		}
+		*/
 	}
 }
