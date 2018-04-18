@@ -6,9 +6,7 @@ namespace Ingame
 {
 	public abstract class Aircraft : FlyingObjectBase
 	{
-		protected abstract bool CanShoot();
-
-		protected abstract void Shoot();
+		protected virtual bool CanShoot() { return true; }
 
 		#region turret
 		private List<Turret> m_turrets;
@@ -19,6 +17,9 @@ namespace Ingame
 			{
 				m_turrets = new List<Turret>();
 			}
+
+			turret.transform.parent = transform;
+			turret.transform.localPosition = localPos;
 
 			m_turrets.Add(turret);
 		}
@@ -39,6 +40,10 @@ namespace Ingame
 
 			for(int i = 0; i < m_turrets.Count; i++)
 			{
+				if(!m_turrets[i].IsCoolTimeElapsed())
+				{
+					break;
+				}
 				m_turrets[i].Shoot();
 			}
 		}

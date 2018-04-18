@@ -230,14 +230,14 @@ namespace Ingame
 		/// </summary>
 		public void DoMove()
 		{
-			Rigidbody.MovePosition(Move());
+			Rigidbody.MovePosition(transform.position + GetMoveVector());
 		}
 
 		/// <summary>
 		/// 移動に関わる内容はここで実装してください。
 		/// </summary>
 		/// <returns>移動差分</returns>
-		protected abstract Vector3 Move();
+		protected abstract Vector3 GetMoveVector();
 
 		#region Collision
 		/// <summary>

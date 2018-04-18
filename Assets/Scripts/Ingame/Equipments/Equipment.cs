@@ -6,5 +6,9 @@ namespace Ingame
 {
 	public abstract class Equipment : MonoBehaviour
 	{
+		public void Initialize()
+		{
+			
+		}
 	}
 }

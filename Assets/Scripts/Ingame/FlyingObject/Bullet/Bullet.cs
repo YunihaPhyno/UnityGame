@@ -9,17 +9,19 @@ namespace Ingame
 	{
 		private Vector3 m_velocity;
 		public Vector3 Velocity { get { return m_velocity; } protected set { m_velocity = value; } }
-		private LAYER m_layer;
 
+		#region LAYER
 		public enum LAYER
 		{
 			FRIEND,
 			ENEMY,
 		}
 
+		private LAYER m_layer;
+
 		protected override string GetLayerName()
 		{
-			switch (m_layer)
+			switch(m_layer)
 			{
 				case LAYER.FRIEND:
 					return "FriendBullet";
@@ -31,8 +33,11 @@ namespace Ingame
 			Debug.LogError("Unknown Bullet Layer Name");
 			return "Default";
 		}
+		#endregion // LAYER
 
-		public virtual void Initialize(Vector3 pos, Vector3 velocity, LAYER layer, int damage = 1, int hp = 1)
+		float m_lifetime;
+
+		public virtual void Initialize(Vector3 pos, Vector3 velocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
 		{
 			transform.position = pos;
 			m_velocity = velocity;
@@ -42,6 +47,7 @@ namespace Ingame
 			m_layer = layer;
 			gameObject.SetActive(true);
 			Start();
+			m_lifetime = lifetime;
 		}
 
 		protected override string GetTag()
@@ -51,10 +57,10 @@ namespace Ingame
 
 		protected virtual void UpdateVelocity (){}
 
-		protected sealed override Vector3 Move()
+		protected sealed override Vector3 GetMoveVector()
 		{
 			UpdateVelocity();
-			return transform.position + m_velocity * ScalableTime.DeltaTime;
+			return m_velocity * Time.deltaTime;
 		}
 
 		protected override void OnDamagedEvent(int value)

@@ -75,11 +75,11 @@ namespace Ingame
 
 		#endregion //input
 
-		protected override Vector3 Move()
+		protected override Vector3 GetMoveVector()
 		{
 			float speed = CalculationSpeed(m_defaultSpeed, m_inputParam.Input);
 			Vector3 moveVector = Mathv.CalculateMoveVector(m_inputParam.Input.MoveDirection, speed);
-			return transform.position + moveVector;
+			return moveVector;
 		}
 
 		// inputに基づいた速度計算用。恐らくPlayerでしか使わないだろう
@@ -102,7 +102,7 @@ namespace Ingame
 
 		protected override bool CanShoot()
 		{
-			m_shootTimer -= ScalableTime.DeltaTime;
+			m_shootTimer -= Time.deltaTime;
 			if(m_shootTimer > 0)
 			{
 				return false;
@@ -115,19 +115,6 @@ namespace Ingame
 			}
 
 			return false;
-		}
-
-		protected override void Shoot()
-		{
-			/*
-			LinearAccelBullet[] straightBullets = GameManager.Instance.BulletManagers.Straight.GetBullets(9);
-
-			for (int i = 0; i < straightBullets.Length; i++)
-			{
-				straightBullets[i].Initialize(transform.position, new Vector3(i - 4, 5 + 1 * Mathf.Sin(((float)(i + 0.5) / (float)straightBullets.Length) * Mathf.PI), 0), Bullet.LAYER.FRIEND);
-				straightBullets[i].SetConstantAcceleration(new Vector3(5 * Mathf.Cos(((float)(i + 0.5) / (float)straightBullets.Length) * Mathf.PI), 10, 0));
-			}
-			*/
 		}
 	}
 }

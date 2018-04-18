@@ -10,17 +10,19 @@ namespace Ingame
 	public class BulletManagers : MonoBehaviour
 	{
 		[SerializeField]
-		LinearAccelBulletManager m_straightBulletManager;
-		public LinearAccelBulletManager Straight { get { return m_straightBulletManager; } }
+		LinearAccelBulletManager m_linearAccelBulletManager;
+		public LinearAccelBulletManager Straight { get { return m_linearAccelBulletManager; } }
 
 		public void Inisialize()
 		{
-			m_straightBulletManager.Initialize();
+			m_linearAccelBulletManager.Initialize();
+
+			BulletSupplier.Initialize(m_linearAccelBulletManager);
 		}
 
-		public void DoMove ()
+		public void DoMove()
 		{
-			m_straightBulletManager.DoMove();
+			m_linearAccelBulletManager.DoMove();
 		}
 	}
 }
