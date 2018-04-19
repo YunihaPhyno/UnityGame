@@ -35,6 +35,7 @@ namespace Ingame
 			DoInput();
 			DoMove();
 			DoShoot();
+			DoUpdateEquipments();
 		}
 
 		private void DoMove()
@@ -53,6 +54,12 @@ namespace Ingame
 		{
 			m_player.DoShoot();
 			m_enemyManager.DoShoot();
+		}
+
+		private void DoUpdateEquipments()
+		{
+			m_player.UpdateEquipments();
+			m_enemyManager.DoUpdateEquipments();
 		}
 	}
 }

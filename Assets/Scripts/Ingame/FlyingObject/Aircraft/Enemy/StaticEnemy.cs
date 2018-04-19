@@ -7,19 +7,36 @@ namespace Ingame
 {
 	public class StaticEnemy : EnemyBase
 	{
-		private void Awake()//ForDebug
+		protected override void Initialize()//ForDebug
 		{
-			GameObject turret = new GameObject();
-			Turret turretComponent = turret.AddComponent<Turret>();
+			RotateTable rotateTable = GetDebugRotateTable();
+			rotateTable.GetEquipmentsHolder().AddTurret(GetDebugRoundTurret(), new Vector3(0,0,0));
+
+			GetEquipmentsHolder().AddEquipment(rotateTable, new Vector3(0,0,0));
+		}
+
+		private RotateTable GetDebugRotateTable()
+		{
+			GameObject rotateTable = new GameObject("RotateTable");
+			RotateTable rotateTableComponent = rotateTable.AddComponent<RotateTable>();
+
+			return rotateTableComponent;
+		}
+
+		private Turret GetDebugRoundTurret()
+		{
+			GameObject turret = new GameObject("RoundTurret");
+			Turret turretComponent = turret.AddComponent<RoundTurret>();
 
 			Turret.Parameter param = new Turret.Parameter();
 			param.bulletType = BulletSupplier.BULLET_TYPE.LINEAR_ACCEL;
-			param.numBullets = 2;
+			param.numBullets = 10;
 			param.initializeSpeed = 1.0f;
-			param.coolTime = 1.0f;
+			param.coolTime = 0.5f;
 
 			turretComponent.SetParam(param);
-			AddTurret(turretComponent, new Vector3(0,0,0));
+
+			return turretComponent;
 		}
 
 		protected override Vector3 GetMoveVector()

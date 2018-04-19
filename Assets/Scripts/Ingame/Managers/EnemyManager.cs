@@ -24,5 +24,13 @@ namespace Ingame
 				m_enemies[i].DoShoot();
 			}
 		}
+
+		public void DoUpdateEquipments()
+		{
+			for(int i = 0; i < m_enemies.Length; i++)
+			{
+				m_enemies[i].GetEquipmentsHolder().UpdateAllEquipments();
+			}
+		}
 	}
 }

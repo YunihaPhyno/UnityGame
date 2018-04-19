@@ -116,7 +116,13 @@ namespace Ingame
 		{
 			SetTag();
 			SetLayer();
+			Initialize();
 		}
+
+		/// <summary>
+		/// 初期化用(Startの代わり)
+		/// </summary>
+		protected virtual void Initialize(){}
 
 		/// <summary>
 		/// タグのセット

@@ -12,7 +12,9 @@ namespace Ingame
 			for (int i = 0; i < bullets.Length; i++)
 			{
 				Vector3 direction = new Vector3(Mathf.Cos(theta * i), Mathf.Sin(theta * i), 0);
-				bullets[i].Initialize(this.transform.position, direction * 3, GetBulletLayer());
+				direction = transform.rotation * direction;
+				// 第一引数の「+ direction」は同時に弾を生成したときにコリジョン判定が大量に動いてしまうのの防止策
+				bullets[i].Initialize(this.transform.position + direction, direction * 3, GetBulletLayer());
 			}
 		}
 	}

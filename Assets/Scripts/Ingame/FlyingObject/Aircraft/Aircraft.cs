@@ -8,44 +8,31 @@ namespace Ingame
 	{
 		protected virtual bool CanShoot() { return true; }
 
-		#region turret
-		private List<Turret> m_turrets;
-
-		public void AddTurret(Turret turret, Vector3 localPos)
+		#region EquipmentsHolder
+		private EquipmentsHolder m_equipmentsHolder;
+		public EquipmentsHolder GetEquipmentsHolder()
 		{
-			if(m_turrets == null)
+			if(m_equipmentsHolder == null)
 			{
-				m_turrets = new List<Turret>();
+				m_equipmentsHolder = new EquipmentsHolder(transform);
 			}
-
-			turret.transform.parent = transform;
-			turret.transform.localPosition = localPos;
-
-			m_turrets.Add(turret);
+			return m_equipmentsHolder;
 		}
-		#endregion // Turret
 
+		public void UpdateEquipments()
+		{
+			GetEquipmentsHolder().UpdateAllEquipments();
+		}
 
 		public void DoShoot()
 		{
-			if(m_turrets == null || m_turrets.Count <= 0)
-			{
-				return;
-			}
-
 			if(!CanShoot())
 			{
 				return;
 			}
 
-			for(int i = 0; i < m_turrets.Count; i++)
-			{
-				if(!m_turrets[i].IsCoolTimeElapsed())
-				{
-					break;
-				}
-				m_turrets[i].Shoot();
-			}
+			GetEquipmentsHolder().AllowShootAllTurrets();
 		}
+		#endregion // EquipmentsHolder
 	}
 }
