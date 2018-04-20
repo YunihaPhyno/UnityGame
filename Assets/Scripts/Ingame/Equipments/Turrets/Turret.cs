@@ -25,9 +25,9 @@ namespace Ingame
 		#endregion
 
 		#region CanShoot
-		private bool m_canShoot = false;
-		public void AllowShootThisFrame() { m_canShoot = true; }
-		public bool CanShoot { get { return m_canShoot; } }
+		private bool m_allowedShoot = false;
+		public void AllowShootThisFrame() { m_allowedShoot = true; }
+		private bool CanShoot() { return m_allowedShoot && IsCoolTimeElapsed(); }
 		#endregion //CanShoot
 
 		#region Parameter
@@ -52,7 +52,10 @@ namespace Ingame
 
 		public override void InvokeUpdate()
 		{
-			Shoot();
+			if(CanShoot())
+			{
+				Shoot();
+			}
 		}
 
 		/// <summary>
@@ -62,18 +65,6 @@ namespace Ingame
 		/// <param name="bullets">発射する弾の配列</param>
 		private void Shoot()
 		{
-			// 発射が許可されている？
-			if(!CanShoot)
-			{
-				return;
-			}
-
-			// クールタイムは完了している？
-			if(!IsCoolTimeElapsed())
-			{
-				return;
-			}
-
 			if(m_param == null)
 			{
 				Debug.LogError("パラメーターがありません！");
@@ -81,7 +72,19 @@ namespace Ingame
 			}
 			
 			ResetCoolTime();
-			InvokeShoot(BulletSupplier.GetBullets(m_param.bulletType, m_param.numBullets));
+			InvokeShoot(GetBullets(m_param.bulletType, m_param.numBullets));
+		}
+
+		private static Bullet[] GetBullets(BulletSupplier.BULLET_TYPE type, int num)
+		{
+			switch(type)
+			{
+				case BulletSupplier.BULLET_TYPE.LINEAR_ACCEL:
+					return BulletSupplier.GetBullets<LinearAccelBullet>(num);
+
+			}
+
+			throw new System.Exception("Unknown Bullet type");
 		}
 		
 		/// <summary>

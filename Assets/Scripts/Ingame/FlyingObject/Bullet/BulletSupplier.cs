@@ -23,16 +23,9 @@ namespace Ingame
 			m_linearAccel = linearAccel;
 		}
 
-		public static Bullet[] GetBullets(BULLET_TYPE type, int num)
+		public static LinearAccelBullet[] GetBullets<LinearAccelBulle>(int num)
 		{
-			switch(type)
-			{
-			case BULLET_TYPE.LINEAR_ACCEL:
-				return m_linearAccel.GetBullets(num);
-			}
-
-			Debug.LogError("未知の弾タイプです。");
-			return null;
+			return m_linearAccel.GetBullets(num);
 		}
 	}
 }

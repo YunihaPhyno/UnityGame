@@ -24,5 +24,10 @@ namespace Ingame
 		{
 			m_linearAccelBulletManager.DoMove();
 		}
+
+		public void DoUpdateEquipments()
+		{
+			m_linearAccelBulletManager.DoUpdateEquipments();
+		}
 	}
 }

@@ -36,13 +36,47 @@ namespace Ingame
 			return gobj;
 		}
 
+		#region DoMove
 		public void DoMove()
+		{
+			CommonUpdate(DoMoveProcessing);
+		}
+
+		private void DoMoveProcessing(T bullet)
+		{
+			bullet.DoMove();
+		}
+		#endregion // DoMove
+
+		#region DoUpdateEquipMents
+		public void DoUpdateEquipments()
+		{
+			CommonUpdate(DoUpdateEquipmentsProcessing);
+		}
+
+		public void DoUpdateEquipmentsProcessing(T bullet)
+		{
+			bullet.GetEquipmentsHolder().UpdateAllEquipments();
+		}
+		#endregion // DoUpdateEquipMents
+
+		#region Common
+		// 弾一個一個に対する処理のデリゲート
+		delegate void UpdateProcessingDelegate(T bullet);
+
+		// 共通処理
+		private void CommonUpdate(UpdateProcessingDelegate onUpdate)
 		{
 			for(int i = 0; i < m_ringBuffer.Length; i++)
 			{
-				m_ringBuffer[i].DoMove();
+				if(!m_ringBuffer[i].gameObject.activeSelf)
+				{
+					continue;
+				}
+				onUpdate(m_ringBuffer[i]);
 			}
 		}
+		#endregion // Common
 
 		public T GetBullet()
 		{
@@ -54,7 +88,7 @@ namespace Ingame
 			}
 			return bullet;
 		}
-
+		
 		public T[] GetBullets(int num)
 		{
 			T[] bullets = new T[num];

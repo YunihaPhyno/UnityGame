@@ -108,6 +108,23 @@ namespace Ingame
 		protected virtual void OnDamagedEvent (int value){}
 		#endregion
 
+		#region EquipmentsHolder
+		private EquipmentsHolder m_equipmentsHolder;
+		public EquipmentsHolder GetEquipmentsHolder()
+		{
+			if(m_equipmentsHolder == null)
+			{
+				m_equipmentsHolder = new EquipmentsHolder(transform);
+			}
+			return m_equipmentsHolder;
+		}
+
+		public void UpdateEquipments()
+		{
+			GetEquipmentsHolder().UpdateAllEquipments();
+		}
+		#endregion // EquipmentsHolder
+
 		#region Initialize
 		/// <summary>
 		/// このスクリプトがアクティブになったときに呼ばれる(もしくは強制初期化したいとき)

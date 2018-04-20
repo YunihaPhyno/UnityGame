@@ -8,22 +8,6 @@ namespace Ingame
 	{
 		protected virtual bool CanShoot() { return true; }
 
-		#region EquipmentsHolder
-		private EquipmentsHolder m_equipmentsHolder;
-		public EquipmentsHolder GetEquipmentsHolder()
-		{
-			if(m_equipmentsHolder == null)
-			{
-				m_equipmentsHolder = new EquipmentsHolder(transform);
-			}
-			return m_equipmentsHolder;
-		}
-
-		public void UpdateEquipments()
-		{
-			GetEquipmentsHolder().UpdateAllEquipments();
-		}
-
 		public void DoShoot()
 		{
 			if(!CanShoot())
@@ -33,6 +17,5 @@ namespace Ingame
 
 			GetEquipmentsHolder().AllowShootAllTurrets();
 		}
-		#endregion // EquipmentsHolder
 	}
 }
