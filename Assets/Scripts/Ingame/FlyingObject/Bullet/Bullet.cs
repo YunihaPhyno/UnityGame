@@ -10,6 +10,9 @@ namespace Ingame
 		private Vector3 m_velocity;
 		public Vector3 Velocity { get { return m_velocity; } protected set { m_velocity = value; } }
 
+		// 存在できる時間(0になると自動消滅)
+		float m_lifetime = float.MaxValue;
+
 		#region LAYER
 		public enum LAYER
 		{
@@ -33,10 +36,9 @@ namespace Ingame
 			Debug.LogError("Unknown Bullet Layer Name");
 			return "Default";
 		}
-		#endregion // LAYER
+		#endregion // LAYER		
 
-		// 存在できる時間(0になると自動消滅)
-		float m_lifetime = float.MaxValue;
+
 
 		/// <summary>
 		/// 弾を初期化する(発射するときに使う)
