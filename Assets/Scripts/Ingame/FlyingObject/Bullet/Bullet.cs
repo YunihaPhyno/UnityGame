@@ -7,8 +7,11 @@ namespace Ingame
 {
 	public abstract class Bullet : FlyingObjectBase
 	{
-		private Vector3 m_velocity;
-		public Vector3 Velocity { get { return m_velocity; } protected set { m_velocity = value; } }
+		private Vector3 m_localVelocity;
+		public Vector3 LocalVelocity { get { return m_localVelocity; } protected set { m_localVelocity = value; } }
+
+		// グローバル座標の速度を取得(重ければキャッシュを使うこと)
+		public Vector3 Velocity { get { return transform.rotation * m_localVelocity; } }
 
 		// 存在できる時間(0になると自動消滅)
 		float m_lifetime = float.MaxValue;
@@ -38,7 +41,15 @@ namespace Ingame
 		}
 		#endregion // LAYER		
 
+		// 発射されたか(trueのとき移動する)
+		private bool m_isFired = false;
 
+		// 発射命令(Turretがメッセージを送る)
+		public void Fire()
+		{
+			gameObject.SetActive(true);
+			m_isFired = true;
+		}
 
 		/// <summary>
 		/// 弾を初期化する(発射するときに使う)
@@ -49,13 +60,13 @@ namespace Ingame
 		/// <param name="damage">攻撃力</param>
 		/// <param name="hp">耐久力</param>
 		/// <param name="lifetime">滞空時間</param>
-		public virtual void Initialize(Vector3 pos, Vector3 velocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
+		public virtual void Initialize(Vector3 pos, Vector3 localVelocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
 		{
 			// 射出される位置へ移動
 			transform.position = pos;
 
-			// 初速度
-			m_velocity = velocity;
+			// 初速度(0,1,0基準)
+			LocalVelocity = localVelocity;
 
 			// HP初期化
 			InitHp(hp);
@@ -72,9 +83,6 @@ namespace Ingame
 			// 生存可能時間設定
 			m_lifetime = lifetime;
 
-			// ゲームオブジェクト起動
-			gameObject.SetActive(true);
-
 			// 強制的に初期化
 			Start();
 		}
@@ -86,10 +94,17 @@ namespace Ingame
 
 		protected virtual void UpdateVelocity (){}
 
+		// bulletはlocalPosision(0,1,0)に向かって飛ぶ
 		protected sealed override Vector3 GetMoveVector()
 		{
+			//発射されていなければ0になる
+			if(!m_isFired)
+			{
+				return Vector3.zero;
+			}
+
 			UpdateVelocity();
-			return m_velocity * Time.deltaTime;
+			return Velocity * Time.deltaTime;
 		}
 
 		protected override void OnDamagedEvent(int value)
@@ -103,6 +118,8 @@ namespace Ingame
 		private void OnDestroyEvent()
 		{
 			GetEquipmentsHolder().DestroyAllEquipments();
+
+			m_isFired = false;
 			gameObject.SetActive(false);
 		}
 	}

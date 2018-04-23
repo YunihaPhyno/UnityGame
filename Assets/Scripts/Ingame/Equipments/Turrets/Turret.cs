@@ -6,56 +6,52 @@ namespace Ingame
 {
 	public class Turret : Equipment
 	{
-		public delegate void AllowShootDelegate();
+		private bool CanShoot() { return IsCoolTimeElapsed() || m_magazine == null; }
 
-		#region CoolTime		
-		// 最後に発射した時間
-		private float m_lastShootTime = 0.0f;
-		protected void ResetCoolTime() { m_lastShootTime = Time.time; }
+		#region CoolTime
+		// クールタイム(最大値)
+		private float m_coolTime = 0.0f;
+		public void SetCoolTime (float value) { m_coolTime = value; }
+		
+		// 残りのクールタイム
+		private float m_remainingCoolTime = 0.0f;
+
+		// クールタイムを元に戻す
+		protected void ResetCoolTime() { m_remainingCoolTime = m_coolTime; }
+
+		// 時間を経過させる
+		private void UpdateCoolTime() { m_remainingCoolTime -= Time.deltaTime; }
 
 		// クールタイムが完了したか
 		public bool IsCoolTimeElapsed()
 		{
-			if(m_param == null)
-			{
-				return false;
-			}
-			return (Time.time - m_lastShootTime) > m_param.coolTime;
+			return (Time.time - m_remainingCoolTime) > m_coolTime;
 		}
-		#endregion
+		#endregion // CoolTime
 
-		#region CanShoot
-		private bool m_allowedShoot = false;
-		public void AllowShootThisFrame() { m_allowedShoot = true; }
-		private bool CanShoot() { return m_allowedShoot && IsCoolTimeElapsed(); }
-		#endregion //CanShoot
-
-		#region Parameter
-		public class Parameter
+		#region Magazine
+		private Bullet[] m_magazine;
+		public void Reload(Bullet[] bullets)
 		{
-			// 発射される弾の種類
-			public BulletSupplier.BULLET_TYPE bulletType = BulletSupplier.BULLET_TYPE.LINEAR_ACCEL;
-
-			// 一回で装填される弾の数
-			public int numBullets = 1;
-
-			// 発射される弾の初速度
-			public float initializeSpeed = 1.0f;
-
-			// クールタイム
-			public float coolTime = float.MaxValue;
+			m_magazine = bullets;
 		}
 
-		private Parameter m_param;
-		public void SetParam(Parameter param) { m_param = param; }
-		#endregion // Parameter
+		/// <summary>
+		/// 現在装填されているbulletを破棄します。
+		/// </summary>
+		public void DropMagazine() { m_magazine = null; }
+
+		/// <summary>
+		/// 弾倉に弾はあるか？
+		/// </summary>
+		/// <returns>既に弾がこめられていればtrue</returns>
+		public bool IsReloaded() { return (m_magazine != null); }
+		
+		#endregion // Magazine
 
 		public override void InvokeUpdate()
 		{
-			if(CanShoot())
-			{
-				Shoot();
-			}
+			UpdateCoolTime();
 		}
 
 		/// <summary>
@@ -63,30 +59,23 @@ namespace Ingame
 		/// CoolTimeに関係なく実行したら弾が発射される
 		/// </summary>
 		/// <param name="bullets">発射する弾の配列</param>
-		private void Shoot()
+		public void Shoot()
 		{
-			if(m_param == null)
+			if(!CanShoot())
 			{
-				Debug.LogError("パラメーターがありません！");
 				return;
 			}
-			
+
+			// 射撃の実行
+			InvokeShoot(m_magazine);
+
+			// クールタイムリセット
 			ResetCoolTime();
-			InvokeShoot(GetBullets(m_param.bulletType, m_param.numBullets));
+
+			// 弾倉の破棄
+			DropMagazine();
 		}
 
-		private static Bullet[] GetBullets(BulletSupplier.BULLET_TYPE type, int num)
-		{
-			switch(type)
-			{
-				case BulletSupplier.BULLET_TYPE.LINEAR_ACCEL:
-					return BulletSupplier.GetBullets<LinearAccelBullet>(num);
-
-			}
-
-			throw new System.Exception("Unknown Bullet type");
-		}
-		
 		/// <summary>
 		/// 発射アルゴリズムの実装。これをoverrideして撃ち方を変える
 		/// </summary>
@@ -97,26 +86,8 @@ namespace Ingame
 			Vector3 direction = transform.rotation * new Vector3(0, 1, 0);
 			for(int i = 0; i < bullets.Length; i++)
 			{
-				bullets[i].Initialize(transform.position, direction * m_param.initializeSpeed, GetBulletLayer());
+				bullets[i].Fire();
 			}
-		}
-
-
-		// 弾のレイヤーを取得
-		protected Bullet.LAYER GetBulletLayer()
-		{
-			string layerName = LayerMask.LayerToName(gameObject.layer);
-			switch(layerName)
-			{
-				case "Enemy":
-					return Bullet.LAYER.ENEMY;
-
-				case "Player":
-					return Bullet.LAYER.FRIEND;
-			}
-
-			Debug.LogError("レイヤーが設定されていないか、想定しないレイヤー名です。");
-			return Bullet.LAYER.FRIEND;//とりあえずFRIENDを返す
 		}
 	}
 }
