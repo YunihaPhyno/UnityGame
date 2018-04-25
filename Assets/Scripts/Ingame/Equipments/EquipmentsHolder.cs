@@ -87,9 +87,23 @@ namespace Ingame
 			}
 		}
 
-		/// <summary>
-		/// 持ってる全ての装備を破棄
-		/// </summary>
+		public void FixedUpdateAllEquipments()
+		{
+			if(m_equipments == null)
+			{
+				return;
+			}
+
+			for(int i = 0; i < m_equipments.Count; i++)
+			{
+				m_equipments[i].InvokeFixedUpdate();
+				m_equipments[i].GetEquipmentsHolder().FixedUpdateAllEquipments();
+			}
+		}
+
+			/// <summary>
+			/// 持ってる全ての装備を破棄
+			/// </summary>
 		public void DestroyAllEquipments()
 		{
 			if(m_equipments == null)
@@ -104,76 +118,5 @@ namespace Ingame
 
 			m_equipments = null;
 		}
-
-		#region Turret
-		private List<Turret> m_turrets;
-		public void AddTurret(Turret turret, Vector3 localPos)
-		{
-			if(m_turrets == null)
-			{
-				m_turrets = new List<Turret>();
-			}
-
-			m_turrets.Add(turret);
-			AddEquipment(turret, localPos);
-		}
-
-		public void AllowShootAllTurrets()
-		{
-			AllowShootAllThisHolderTurrets();
-
-			// 子要素にも伝播する
-			AllowShootAllChildrenTurrets();
-		}
-
-		private void AllowShootAllThisHolderTurrets()
-		{
-			if(m_turrets == null)
-			{
-				return;
-			}
-
-			for(int i = 0; i < m_turrets.Count; i++)
-			{
-				if(m_turrets[i] == null)
-				{
-					continue;
-				}
-
-				m_turrets[i].Shoot();
-			}
-		}
-
-		private void AllowShootAllChildrenTurrets()
-		{
-			if(m_equipments == null)
-			{
-				return;
-			}
-			
-			for(int i = 0; i < m_equipments.Count; i++)
-			{
-				m_equipments[i].GetEquipmentsHolder().AllowShootAllTurrets();
-			}
-		}
-
-		public List<Turret> GetTurretsInChildren()
-		{
-			var turrets = new List<Turret>();
-			if(m_equipments == null)
-			{
-				return turrets;
-			}
-
-			turrets.AddRange(m_turrets);
-
-			for(int i = 0; i < m_equipments.Count; i++)
-			{
-				turrets.AddRange(m_equipments[i].GetEquipmentsHolder().GetTurretsInChildren());
-			}
-
-			return turrets;
-		}
-		#endregion // Turret
 	}
 }

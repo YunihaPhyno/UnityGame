@@ -6,7 +6,7 @@ namespace Ingame
 {
 	public class Turret : Equipment
 	{
-		private bool CanShoot() { return IsCoolTimeElapsed() || m_magazine == null; }
+		private bool CanShoot() { return IsCoolTimeElapsed() && m_magazine != null; }
 
 		#region CoolTime
 		// クールタイム(最大値)
@@ -20,12 +20,12 @@ namespace Ingame
 		protected void ResetCoolTime() { m_remainingCoolTime = m_coolTime; }
 
 		// 時間を経過させる
-		private void UpdateCoolTime() { m_remainingCoolTime -= Time.deltaTime; }
+		private void UpdateCoolTime() { m_remainingCoolTime -= Time.fixedDeltaTime; }
 
 		// クールタイムが完了したか
 		public bool IsCoolTimeElapsed()
 		{
-			return (Time.time - m_remainingCoolTime) > m_coolTime;
+			return m_remainingCoolTime <= 0;
 		}
 		#endregion // CoolTime
 
@@ -49,21 +49,21 @@ namespace Ingame
 		
 		#endregion // Magazine
 
-		public override void InvokeUpdate()
+		public override void InvokeFixedUpdate()
 		{
+			base.InvokeFixedUpdate();
 			UpdateCoolTime();
 		}
 
 		/// <summary>
-		/// 弾を発射する
-		/// CoolTimeに関係なく実行したら弾が発射される
+		/// 射撃命令を出す
 		/// </summary>
-		/// <param name="bullets">発射する弾の配列</param>
-		public void Shoot()
+		/// <returns>射撃が実行されたか</returns>
+		public bool Shoot()
 		{
 			if(!CanShoot())
 			{
-				return;
+				return false;
 			}
 
 			// 射撃の実行
@@ -74,6 +74,8 @@ namespace Ingame
 
 			// 弾倉の破棄
 			DropMagazine();
+
+			return true;
 		}
 
 		/// <summary>
@@ -86,8 +88,49 @@ namespace Ingame
 			Vector3 direction = transform.rotation * new Vector3(0, 1, 0);
 			for(int i = 0; i < bullets.Length; i++)
 			{
-				bullets[i].Fire();
+				bullets[i].Fire(transform.position);
 			}
 		}
+
+		#region Controller
+		public class Controller
+		{
+			private Turret m_turret;
+			public Controller(Turret turret)
+			{
+				m_turret = turret;
+			}
+
+			public bool IsExisted()
+			{
+				return (m_turret != null);
+			}
+			
+			public void Shoot()
+			{
+				m_turret.Shoot();
+			}
+
+			public void Reload(Bullet[] bullets)
+			{
+				m_turret.Reload(bullets);
+			}
+
+			public bool IsReloaded()
+			{
+				return m_turret.IsReloaded();
+			}
+
+			public void DropMagazine()
+			{
+				m_turret.DropMagazine();
+			}
+		}
+
+		public Controller GetController()
+		{
+			return new Controller(this);
+		}
+		#endregion // Controller
 	}
 }

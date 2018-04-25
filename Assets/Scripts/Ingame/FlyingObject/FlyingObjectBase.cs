@@ -6,6 +6,76 @@ namespace Ingame
 {
 	public abstract class FlyingObjectBase : MonoBehaviour
 	{
+		#region Initialize
+		/// <summary>
+		/// 初期化
+		/// </summary>
+		public void Initialize()
+		{
+			SetTag();
+			SetLayer();
+			OnInitialize();
+		}
+
+		/// <summary>
+		/// 子クラスの初期化処理はこちらに記述する
+		/// </summary>
+		protected virtual void OnInitialize() { }
+
+		#region Tag
+		/// <summary>
+		/// タグのセット
+		/// </summary>
+		private void SetTag()
+		{
+			gameObject.tag = GetTag();
+		}
+
+		/// <summary>
+		/// タグを取得する(Startで初期化する用)
+		/// </summary>
+		/// <returns>タグ</returns>
+		protected abstract string GetTag();
+		#endregion // Tag
+
+		#region Layer
+		/// <summary>
+		/// レイヤーのセット
+		/// </summary>
+		private void SetLayer()
+		{
+			SetLayerAllChildren(transform, LayerMask.NameToLayer(GetLayerName()));
+		}
+
+		private static void SetLayerAllChildren(Transform transform, int layer)
+		{
+			if(transform == null)
+			{
+				return;
+			}
+
+			transform.gameObject.layer = layer;
+
+			Transform[] transforms = transform.GetComponentsInChildren<Transform>(true);
+			for(int i = 0; i < transforms.Length; i++)
+			{
+				if(transform == transforms[i])
+				{
+					continue;
+				}
+				SetLayerAllChildren(transforms[i], layer);
+			}
+		}
+
+		/// <summary>
+		/// レイヤーを取得する
+		/// </summary>
+		/// <returns></returns>
+		protected abstract string GetLayerName();
+		#endregion // Layer
+
+		#endregion // Initialize
+
 		#region HP
 		/// <summary>
 		/// HPの最大値
@@ -108,89 +178,6 @@ namespace Ingame
 		protected virtual void OnDamagedEvent (int value){}
 		#endregion
 
-		#region EquipmentsHolder
-		private EquipmentsHolder m_equipmentsHolder;
-		public EquipmentsHolder GetEquipmentsHolder()
-		{
-			if(m_equipmentsHolder == null)
-			{
-				m_equipmentsHolder = new EquipmentsHolder(transform);
-			}
-			return m_equipmentsHolder;
-		}
-
-		public void UpdateEquipments()
-		{
-			GetEquipmentsHolder().UpdateAllEquipments();
-		}
-		#endregion // EquipmentsHolder
-
-		#region Initialize
-		/// <summary>
-		/// このスクリプトがアクティブになったときに呼ばれる(もしくは強制初期化したいとき)
-		/// </summary>
-		protected void Start()
-		{
-			SetTag();
-			SetLayer();
-			Initialize();
-		}
-
-		/// <summary>
-		/// 初期化用(Startの代わり)
-		/// </summary>
-		protected virtual void Initialize(){}
-
-		/// <summary>
-		/// タグのセット
-		/// </summary>
-		private void SetTag()
-		{
-			gameObject.tag = GetTag();
-		}
-
-		/// <summary>
-		/// タグを取得する(Startで初期化する用)
-		/// </summary>
-		/// <returns>タグ</returns>
-		protected abstract string GetTag();
-
-		/// <summary>
-		/// レイヤーのセット
-		/// </summary>
-		private void SetLayer()
-		{
-			SetLayerAllChildren(transform, LayerMask.NameToLayer(GetLayerName()));
-		}
-
-		private static void SetLayerAllChildren(Transform transform, int layer)
-		{
-			if(transform == null)
-			{
-				return;
-			}
-
-			transform.gameObject.layer = layer;
-
-			Transform[] transforms = transform.GetComponentsInChildren<Transform>(true);
-			for (int i = 0; i < transforms.Length; i++)
-			{
-				if(transform == transforms[i])
-				{
-					continue;
-				}
-				SetLayerAllChildren(transforms[i], layer);
-			}
-		}
-
-		/// <summary>
-		/// レイヤーを取得する
-		/// </summary>
-		/// <returns></returns>
-		protected abstract string GetLayerName();
-		#endregion // Initialize
-
-
 		#region Heal
 		/// <summary>
 		/// 回復力
@@ -232,6 +219,7 @@ namespace Ingame
 		protected virtual void OnHealEvent(int value){}
 		#endregion
 
+		#region RigidBody
 		Rigidbody m_rigidbody;
 
 		// いる？
@@ -246,7 +234,21 @@ namespace Ingame
 				return m_rigidbody;
 			}
 		}
+		#endregion //RigidBody
 
+		#region EquipmentsHolder
+		private EquipmentsHolder m_equipmentsHolder;
+		public EquipmentsHolder GetEquipmentsHolder()
+		{
+			if(m_equipmentsHolder == null)
+			{
+				m_equipmentsHolder = new EquipmentsHolder(transform);
+			}
+			return m_equipmentsHolder;
+		}
+		#endregion // EquipmentsHolder
+
+		#region Move
 		/// <summary>
 		/// 移動の実行
 		/// (Updateの中で実行される)
@@ -255,12 +257,13 @@ namespace Ingame
 		{
 			Rigidbody.MovePosition(transform.position + GetMoveVector());
 		}
-
+		
 		/// <summary>
 		/// 移動に関わる内容はここで実装してください。
 		/// </summary>
 		/// <returns>移動差分</returns>
 		protected abstract Vector3 GetMoveVector();
+		#endregion // Move
 
 		#region Collision
 		/// <summary>
@@ -295,5 +298,9 @@ namespace Ingame
 			Healed(flyingObj.HealPower);
 		}
 		#endregion // Collision
+
+		public virtual void InvokeUpdate() { }
+
+		public virtual void InvokeFixedUpdate() { }
 	}
 }

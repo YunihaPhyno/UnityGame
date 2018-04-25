@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Ingame {
 	public class RotateTable : Equipment {
-		public override void InvokeUpdate()
+		public override void InvokeFixedUpdate()
 		{
-			transform.rotation *= Quaternion.Euler(0,0,30 * Time.deltaTime);
+			base.InvokeFixedUpdate();
+			transform.rotation *= Quaternion.Euler(0,0,30 * Time.fixedDeltaTime);
 		}
 	}
 }

@@ -49,6 +49,8 @@ namespace Ingame
 		/// <summary>
 		/// Updateの代わり。overrideして使う
 		/// </summary>
-		public abstract void InvokeUpdate();
+		public virtual void InvokeUpdate() { }
+
+		public virtual void InvokeFixedUpdate() { }
 	}
 }

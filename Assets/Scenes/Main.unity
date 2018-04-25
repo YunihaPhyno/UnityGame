@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHp: 2147483647
   m_currentHp: 2147483647
-  m_attackPower: 2147483647
+  m_attackPower: 0
   m_healPower: 0
 --- !u!54 &316317010
 Rigidbody:
@@ -452,10 +452,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_maxHp: 2147483647
   m_currentHp: 2147483647
-  m_attackPower: 2147483647
+  m_attackPower: 0
   m_healPower: 0
   m_defaultSpeed: 5
-  m_shootTime: 0.3
+  m_shootTime: 0
 --- !u!23 &890941627
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -552,7 +552,6 @@ MonoBehaviour:
   m_player: {fileID: 890941626}
   m_enemyManager: {fileID: 1936621451}
   m_bulletManagers: {fileID: 2065826628}
-  m_resourceManager: {fileID: 11400000, guid: 37adb18faf50dc74b8871d55b03d7152, type: 2}
 --- !u!4 &1343522399
 Transform:
   m_ObjectHideFlags: 0
@@ -694,5 +693,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b77ff1ff1679e4889b11918780e5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_numMaxBullets: 2000
-  m_prefab: {fileID: 1465487777322622, guid: a311436f95488434d88b88f087675cbd, type: 2}
+  m_numMaxBullets: 1000
+  m_prefab: {fileID: 0}

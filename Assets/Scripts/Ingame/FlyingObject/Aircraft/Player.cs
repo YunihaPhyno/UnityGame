@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Common;
+using System;
 
 namespace Ingame
 {
@@ -32,6 +33,8 @@ namespace Ingame
 			/// <summary>ゲームパッドからの入力を保持するクラス</summary>
 			public class PlayerInput
 			{
+				public PlayerInput() : this(false, false, false, Vector3.zero) { }
+
 				public PlayerInput(bool isShoot, bool isSpeedUp, bool isSpeedDown, Vector3 moveDirection)
 				{
 					IsShoot = isShoot;
@@ -58,15 +61,16 @@ namespace Ingame
 
 			EnemyManager m_enemyManager = null;
 
-			public InputParameter(PlayerInput playerInput, EnemyManager enemyManager)
+			public InputParameter() : this(new PlayerInput()) { }
+
+			public InputParameter(PlayerInput playerInput)
 			{
 				Input = playerInput;
-				m_enemyManager = enemyManager;
 			}
 		}
 
 		// 外部入力
-		InputParameter m_inputParam;
+		InputParameter m_inputParam = new InputParameter();
 
 		public void Input(InputParameter param)
 		{
@@ -115,6 +119,42 @@ namespace Ingame
 			}
 
 			return false;
+		}
+
+		public override void InvokeFixedUpdate()
+		{
+			ReloadAllTurrets();
+		}
+
+		private void ReloadAllTurrets()
+		{
+			List<Turret.Controller> turretControllers = GetTurretControllers();
+			for(int i = 0; i < turretControllers.Count; i++)
+			{
+				if(!turretControllers[i].IsExisted())
+				{
+					continue;
+				}
+
+				if(turretControllers[i].IsReloaded())
+				{
+					continue;
+				}
+
+				LinearAccelBullet[] bullets = BulletSupplier.GetBullets<LinearAccelBullet>(3);
+
+				InitializeBullets(bullets);
+
+				turretControllers[i].Reload(bullets);
+			}
+		}
+
+		private static void InitializeBullets(LinearAccelBullet[] bullets)
+		{
+			for(int i = 0; i < bullets.Length; i++)
+			{
+				bullets[i].SetParam(Vector3.up * 5, Bullet.LAYER.FRIEND);
+			}
 		}
 	}
 }

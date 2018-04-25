@@ -8,13 +8,11 @@ namespace Ingame
 	{
 		protected override void InvokeShoot(Bullet[] bullets)
 		{
-			float theta = 2.0f / (float)bullets.Length * Mathf.PI;
+			// TODO:bullet一個一個を回転させる
 			for (int i = 0; i < bullets.Length; i++)
 			{
-				Vector3 direction = new Vector3(Mathf.Cos(theta * i), Mathf.Sin(theta * i), 0);
-				direction = transform.rotation * direction;
-				// 第一引数の「+ direction」は同時に弾を生成したときにコリジョン判定が大量に動いてしまうのの防止策
-				bullets[i].Initialize(this.transform.position + direction, direction * 3, GetBulletLayer());
+				bullets[i].transform.rotation = Quaternion.Euler(0, 0, 360 * i / bullets.Length) * transform.rotation;
+				bullets[i].Fire(transform.position);
 			}
 		}
 	}

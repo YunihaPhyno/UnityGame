@@ -45,10 +45,12 @@ namespace Ingame
 		private bool m_isFired = false;
 
 		// 発射命令(Turretがメッセージを送る)
-		public void Fire()
+		public void Fire(Vector3 position)
 		{
+			transform.position = position;
 			gameObject.SetActive(true);
 			m_isFired = true;
+			Initialize();
 		}
 
 		/// <summary>
@@ -60,11 +62,8 @@ namespace Ingame
 		/// <param name="damage">攻撃力</param>
 		/// <param name="hp">耐久力</param>
 		/// <param name="lifetime">滞空時間</param>
-		public virtual void Initialize(Vector3 pos, Vector3 localVelocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
+		public virtual void SetParam(Vector3 localVelocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
 		{
-			// 射出される位置へ移動
-			transform.position = pos;
-
 			// 初速度(0,1,0基準)
 			LocalVelocity = localVelocity;
 
@@ -82,9 +81,6 @@ namespace Ingame
 
 			// 生存可能時間設定
 			m_lifetime = lifetime;
-
-			// 強制的に初期化
-			Start();
 		}
 
 		protected override string GetTag()
