@@ -27,11 +27,27 @@ namespace Ingame
 			return rotateTableComponent;
 		}
 
+		private LookAtTable GetDebugLookAtTable()
+		{
+			GameObject lookAtTable = new GameObject("LookAtTable");
+			LookAtTable lookAtTableComponent = lookAtTable.AddComponent<LookAtTable>();
+			//lookAtTableComponent.GetLockOnUnit().SetTarget();
+			return lookAtTableComponent;
+		}
+
 		private Turret GetDebugRoundTurret()
 		{
 			GameObject turret = new GameObject("RoundTurret");
 			Turret turretComponent = turret.AddComponent<RoundTurret>();
-			turretComponent.SetCoolTime(0.2f);
+			turretComponent.SetCoolTime(5.2f);
+			return turretComponent;
+		}
+
+		private Turret GetDebugTurret()
+		{
+			GameObject turret = new GameObject("Turret");
+			Turret turretComponent = turret.AddComponent<Turret>();
+			turretComponent.SetCoolTime(5.2f);
 			return turretComponent;
 		}
 
@@ -73,7 +89,9 @@ namespace Ingame
 		{
 			for(int i = 0; i < bullets.Length; i++)
 			{
-				bullets[i].SetParam(Vector3.up * 5, Bullet.LAYER.ENEMY);
+				LinearAccelBullet bullet = bullets[i];
+				bullet.SetParam(Vector3.up * 20, Bullet.LAYER.ENEMY);
+				bullet.SetConstantRotation(new Vector3(0, 0, 60));
 			}
 		}
 	}
