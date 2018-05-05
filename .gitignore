@@ -7,3 +7,5 @@ UnityPackageManager/
 .vs/
 *.csproj
 *.sln
+UnityGame.userprefs
+obj/
