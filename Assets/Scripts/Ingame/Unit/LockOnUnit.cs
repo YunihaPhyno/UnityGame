@@ -40,7 +40,7 @@ namespace Ingame
 		{
 			if(m_targetTransform == null)
 			{
-				return null;
+				return Vector3.zero;
 			}
 			return m_targetTransform.position;
 		}
