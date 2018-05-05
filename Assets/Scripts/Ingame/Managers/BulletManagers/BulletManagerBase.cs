@@ -48,7 +48,7 @@ namespace Ingame
 		}
 		#endregion // DoMove
 
-		#region DoUpdateEquipMents
+		#region DoUpdateEquipments
 		public void DoUpdateEquipments()
 		{
 			CommonUpdate(DoUpdateEquipmentsProcessing);
@@ -59,6 +59,18 @@ namespace Ingame
 			bullet.GetEquipmentsHolder().UpdateAllEquipments();
 		}
 		#endregion // DoUpdateEquipMents
+
+		#region DoFixedUpdate
+		public void DoFixedUpdate()
+		{
+			CommonUpdate(FixedUpdateDelegate);
+		}
+
+		private void FixedUpdateDelegate(T bullet)
+		{
+			bullet.InvokeFixedUpdate();
+		}
+		#endregion // DoFixedUpdate
 
 		#region Common
 		// 弾一個一個に対する処理のデリゲート

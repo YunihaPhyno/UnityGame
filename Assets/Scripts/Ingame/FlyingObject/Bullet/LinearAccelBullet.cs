@@ -11,9 +11,9 @@ namespace Ingame
 		public Vector3 ConstantAcceleration { get { return m_constantAcceleration; }}
 		public void SetConstantAcceleration (Vector3 value) { m_constantAcceleration = value; }
 
-		public override void SetParam(Vector3 velocity, LAYER layer, int damage = 1, int hp = 1, float lifetime = float.MaxValue)
+		public override void SetParam(Vector3 velocity, LAYER layer)
 		{
-			base.SetParam(velocity, layer, damage, hp, lifetime);
+			base.SetParam(velocity, layer);
 			m_constantAcceleration = Vector3.zero;
 		}
 

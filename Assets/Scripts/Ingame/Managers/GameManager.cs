@@ -61,6 +61,7 @@ namespace Ingame
 		// Update is called once per frame
 		private void Update()
 		{
+			Debug.Log("Update : " + Time.fixedDeltaTime.ToString());
 			switch(m_currentState)
 			{
 				case State.INIT:
@@ -75,6 +76,7 @@ namespace Ingame
 
 		private void FixedUpdate()
 		{
+			Debug.Log("FixedUpdate : " + Time.fixedDeltaTime.ToString());
 			switch(m_currentState)
 			{
 				case State.INIT:
@@ -117,6 +119,7 @@ namespace Ingame
 		{
 			m_player.InvokeFixedUpdate();
 			m_enemyManager.DoFixedUpdate();
+			m_bulletManagers.DoFixedUpdate();
 		}
 
 		private void DoMove()
