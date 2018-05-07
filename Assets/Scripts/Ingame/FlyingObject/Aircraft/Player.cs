@@ -8,14 +8,11 @@ namespace Ingame
 {
 	public class Player : Aircraft
 	{
-		[SerializeField]
 		private float m_defaultSpeed = 5.0f;
-
 		private float m_shootTimer = 0;
-
-		[SerializeField]
 		private float m_shootTime;
 
+		#region FlyingObjectParam
 		protected override string GetTag()
 		{
 			return "Player";
@@ -25,6 +22,7 @@ namespace Ingame
 		{
 			return "Friend";
 		}
+		#endregion // FlyingObjectParam
 
 		#region input
 		/// <summary>InputManagerから受け取るためのクラス</summary>
@@ -58,8 +56,6 @@ namespace Ingame
 
 			/// <summary>ゲームパッドからの入力</summary>
 			public PlayerInput Input { get; private set; }
-
-			EnemyManager m_enemyManager = null;
 
 			public InputParameter() : this(new PlayerInput()) { }
 

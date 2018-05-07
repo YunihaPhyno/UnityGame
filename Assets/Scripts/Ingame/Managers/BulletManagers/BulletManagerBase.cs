@@ -44,7 +44,7 @@ namespace Ingame
 
 		private void DoMoveProcessing(T bullet)
 		{
-			bullet.DoMove();
+			bullet.InvokeMove();
 		}
 		#endregion // DoMove
 

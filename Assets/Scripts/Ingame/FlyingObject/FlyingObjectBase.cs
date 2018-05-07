@@ -76,6 +76,40 @@ namespace Ingame
 
 		#endregion // Initialize
 
+		#region Parameter
+		/// <summary>
+		/// StageBuilder入力用パラメーター
+		/// </summary>
+		[SerializeField]
+		public class Parameter
+		{
+			// GameObject側のパラメーター
+			public Vector3 position;
+
+			// クラス内パラメーター
+			public int maxHp;
+			public int currentHp;
+			public int attackPower;
+			public int healPower;
+		}
+
+		/// <summary>
+		/// ステージの初期化時に使う
+		/// </summary>
+		/// <param name="param">パラメーター</param>
+		public virtual void SetParameter(Parameter param)
+		{
+			// GameObject側のパラメーター
+			transform.position = param.position;
+
+			// クラス内パラメーター
+			SetMaxHp(param.maxHp);
+			SetHp(param.currentHp);
+			SetAttackPower(param.attackPower);
+			SetHealPower(param.healPower);
+		}
+		#endregion // Parameter
+
 		#region HP
 		/// <summary>
 		/// HPの最大値
@@ -253,7 +287,7 @@ namespace Ingame
 		/// 移動の実行
 		/// (Updateの中で実行される)
 		/// </summary>
-		public void DoMove()
+		public void InvokeMove()
 		{
 			Rigidbody.MovePosition(transform.position + GetMoveVector());
 		}

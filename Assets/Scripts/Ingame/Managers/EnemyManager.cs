@@ -50,7 +50,7 @@ namespace Ingame
 
 		private void MoveDelegate(EnemyBase enemy)
 		{
-			enemy.DoMove();
+			enemy.InvokeMove();
 		}
 		#endregion // Move
 
